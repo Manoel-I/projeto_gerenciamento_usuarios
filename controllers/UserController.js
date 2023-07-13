@@ -12,6 +12,16 @@ class UserController{
             res.json({ erro : "email é invalido"});
             return;
         }
+        
+        let email_exists = await User.find_email(email);
+        if(email_exists){
+            res.status(406);
+            res.json({
+                message : "email já existe"
+            });
+            return;
+        }
+
 
         await User.new_user(name, email, password); //pelo codigo ser assincrono, se não colocar o await irá passar direto sem esperar terminar
 
