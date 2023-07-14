@@ -1,7 +1,10 @@
 let User = require("../models/User");
 
 class UserController{
-    async index(req, res);
+    async index(req, res){
+        let response = await User.find_all();
+        res.json(response);
+    }
 
     async create(req, res){
         console.log(req.body);
@@ -22,7 +25,7 @@ class UserController{
             return;
         }
 
-
+        console.log("password ---->", password);
         await User.new_user(name, email, password); //pelo codigo ser assincrono, se não colocar o await irá passar direto sem esperar terminar
 
         res.status(200);
