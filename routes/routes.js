@@ -7,4 +7,8 @@ let UserController = require("../controllers/UserController");
 
 router.get('/', HomeController.index);
 router.post('/user', UserController.create); // como segue a extrutura rest, a rota só precisa ter um nome simples
+router.get('/users', UserController.index);
+
+
+
 module.exports = router;
