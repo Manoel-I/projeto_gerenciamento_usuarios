@@ -6,6 +6,17 @@ class UserController{
         res.json(response);
     }
 
+    async findById(req, res){
+        let id = req.params.id;
+        let user = await User.find_by_id(id);
+        if(user == undefined || user.length < 1){
+            res.status(404);
+            res.json({message : "usuario não encontrado!"});
+        }else{
+            res.json(user);
+        }
+    }
+
     async create(req, res){
         console.log(req.body);
         let {name, email, password} = req.body;
@@ -24,12 +35,27 @@ class UserController{
             });
             return;
         }
-
-        console.log("password ---->", password);
+        
         await User.new_user(name, email, password); //pelo codigo ser assincrono, se não colocar o await irá passar direto sem esperar terminar
 
         res.status(200);
         res.json({ message : "usuario criado com sucesso"});
+    }
+
+    async delete(req, res){
+        let {email , password} = req.body;
+        let response_validation = await User.delete(email, password);
+        console.log(response_validation);
+        switch(response_validation.status){
+            case 200:
+                res.status(200);
+                res.json({message : 'usuario deletado com sucesso!'});
+                break;
+            case 400:
+                res.status(400);
+                res.json({message : "email ou senha incorreto(s)!"});
+                break;
+        }
     }
 
 
