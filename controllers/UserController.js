@@ -58,6 +58,18 @@ class UserController{
         }
     }
 
+    async update(req, res){
+        let {id, email, role, name} = req.body;
+        let result = await User.update(id, email, name, role);
+        if(result){
+            res.status(200);
+            res.json({message : "Usuario editado realizada com sucesso!"});
+        }else{
+            res.status(400);
+            res.json({message : "Erro ao realizar a edição do usuario!"});
+        }
+    }
+
 
 }
 

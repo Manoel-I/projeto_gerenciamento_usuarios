@@ -10,7 +10,7 @@ router.post('/user', UserController.create); // como segue a extrutura rest, a r
 router.get('/users', UserController.index); 
 router.get('/user/:id', UserController.findById);
 router.delete('/user', UserController.delete);
-
+router.put('/user', UserController.update); 
 
 
 module.exports = router;
