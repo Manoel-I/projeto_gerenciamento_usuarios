@@ -69,6 +69,46 @@ class User{
             console.log(error);
         }
     }
+
+    async update(id, email, name, role){
+        console.log(id);
+        console.log(email);
+        console.log(name);
+        console.log(role);
+        let user = await this.find_by_id(id);
+        if(user == undefined){
+            return {message : "ID não encontrado"};
+        }else{
+            let editUser = {};
+            if(email != undefined){
+                if(email != user.email){
+                    let result_email = await this.find_email(email);
+                    if(!result_email){
+                        editUser.email = email;
+                    }else{
+                        return {message : "email já cadastrado!"};
+                    }
+                }
+            }
+            console.log("nome -->",name);
+            if(name == undefined){
+                console.log("nome -->",name);
+                editUser.name = name;
+            }
+
+            if(role != undefined){
+                editUser.role = role;
+            }
+
+            try {
+                await knex.update(editUser).where({id : id}).table('users');
+                return {status : true} 
+            } catch (error) {
+                console.log(error);
+                return {status : false};
+            }
+        }
+    }
 }
 
 module.exports = new User();
