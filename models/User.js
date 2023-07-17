@@ -71,42 +71,42 @@ class User{
     }
 
     async update(id, email, name, role){
-        console.log(id);
-        console.log(email);
-        console.log(name);
-        console.log(role);
         let user = await this.find_by_id(id);
-        if(user == undefined){
-            return {message : "ID não encontrado"};
-        }else{
+
+        if(user != undefined){
             let editUser = {};
             if(email != undefined){
-                if(email != user.email){
+
+                if(email != user.email){ 
                     let result_email = await this.find_email(email);
+
                     if(!result_email){
                         editUser.email = email;
+                        
                     }else{
-                        return {message : "email já cadastrado!"};
+                        return {message : "email já cadastrado!", status : 400};
                     }
                 }
             }
-            console.log("nome -->",name);
-            if(name == undefined){
-                console.log("nome -->",name);
+            
+            if(name != undefined){
                 editUser.name = name;
             }
 
             if(role != undefined){
                 editUser.role = role;
             }
-
+            
             try {
                 await knex.update(editUser).where({id : id}).table('users');
-                return {status : true} 
+                return {message : "Usuario editado com sucesso!", status : 200} 
             } catch (error) {
                 console.log(error);
-                return {status : false};
+                return {message : "erro" ,status : 404, error : error};
             }
+        }else{
+            return {message : "ID não encontrado", status : 400};
+            
         }
     }
 }
