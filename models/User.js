@@ -44,6 +44,15 @@ class User{
         }
     }
 
+    async find_by_email(email){
+        try{
+            let result = await knex.select(['id', 'name', 'role', 'email']).table('users').where({email : email});
+            return result;
+        }catch(error){
+            console.log(error);
+        }
+    }
+    
     async delete(email, password){
         let hash;
         let password_validation;
