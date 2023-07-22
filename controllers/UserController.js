@@ -1,5 +1,8 @@
 let User = require("../models/User");
 let PasswordToken = require('../models/PasswordToken');
+let bcrypt = require('bcrypt');
+let jwt = require('jsonwebtoken');
+let secret = "segredoSegredooooos123123123";
 
 class UserController{
     async index(req, res){
@@ -81,13 +84,34 @@ class UserController{
         console.log(isTokenValid);
 
         if(isTokenValid.status){
-            await User.changePassword(password, isTokenValid.token.user_id, isTokenValid.token);
+            await User.changePassword(password, isTokenValid.token.user_id);
             await PasswordToken.setUsedToken(token);
             res.status(200);
             res.json({message : 'senha alterada com sucesso'});
         }else{
             res.status(406);
             res.json({message : "token invalido"});
+        }
+    }
+
+    async login(req, res){
+        console.log("entrou aqui");
+        let {password, email} = req.body;
+
+        let user  = await User.find_by_email(email);
+        console.log(user);
+        if(user != undefined){
+            let result = await bcrypt.compare(password.toString(), user[0].password);
+            if(result){
+                let token = jwt.sign({email : user[0].email, role : user[0].role}, secret);
+                res.status(200);
+                res.json({message : "login feito com sucesso", token : token});
+            }else{
+                res.status(406);
+                res.json({message : "senha incorreta"});
+            }
+        }else{
+            return {status : 400, message : "email incorreto"};
         }
     }
 
