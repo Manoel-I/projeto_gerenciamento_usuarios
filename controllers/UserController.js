@@ -82,7 +82,7 @@ class UserController{
 
         if(isTokenValid.status){
             await User.changePassword(password, isTokenValid.token.user_id, isTokenValid.token);
-            await PasswordToken.used_token(token);
+            await PasswordToken.setUsedToken(token);
             res.status(200);
             res.json({message : 'senha alterada com sucesso'});
         }else{
