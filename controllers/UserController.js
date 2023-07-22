@@ -77,11 +77,12 @@ class UserController{
     async changePassword(req, res){
         let token = req.body.token;
         let password = req.body.password;
-
         let isTokenValid = await PasswordToken.validate(token);
+        console.log(isTokenValid);
 
         if(isTokenValid.status){
             await User.changePassword(password, isTokenValid.token.user_id, isTokenValid.token);
+            await PasswordToken.used_token(token);
             res.status(200);
             res.json({message : 'senha alterada com sucesso'});
         }else{
