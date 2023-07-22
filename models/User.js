@@ -118,6 +118,11 @@ class User{
             
         }
     }
+
+    async changePassword(newPassword, id ,token){
+        let hash = await bcrypt.hash(newPassword.toString(), 10);
+        await knex.update({password : hash}).where({id : id}).table('users');
+    }
 }
 
 module.exports = new User();

@@ -21,10 +21,29 @@ class PasswordToken{
            }catch(error){
             return {error : error, status : 500 };
            }
-           
-            
         }else{
             return {status : 404 , message : "email não encontrado"};
+        }
+    }
+
+    async validate(token){
+        try{
+            let result = await knex.select().where({token : token}).table('password_tokens');
+            
+            if(result.length < 0 ){
+                let tk = result[0];
+
+                if(tk.used){
+                    return {status : false};
+                }else{
+                    return {status : true, token : tk};
+                }
+            }else{
+                return {status : false};
+            }
+        }catch(error){
+            console.log(error);
+            return {status : false};
         }
     }
 }
