@@ -29,11 +29,9 @@ class PasswordToken{
     async validate(token){
         try{
             let result = await knex.select().where({token : token}).table('password_tokens');
-            
-            if(result.length < 0 ){
+            if(result.length > 0 ){
                 let tk = result[0];
-
-                if(tk.used){
+                if(tk.used){ 
                     return {status : false};
                 }else{
                     return {status : true, token : tk};
@@ -45,6 +43,10 @@ class PasswordToken{
             console.log(error);
             return {status : false};
         }
+    }
+    
+    async used_token(token){
+        return await knex.update({used : 1}).where({token : token}).table('password_tokens');
     }
 }
 
