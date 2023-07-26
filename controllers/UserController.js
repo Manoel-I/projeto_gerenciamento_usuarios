@@ -95,11 +95,9 @@ class UserController{
     }
 
     async login(req, res){
-        console.log("entrou aqui");
         let {password, email} = req.body;
-
         let user  = await User.find_by_email(email);
-        console.log(user);
+        
         if(user != undefined){
             let result = await bcrypt.compare(password.toString(), user[0].password);
             if(result){
