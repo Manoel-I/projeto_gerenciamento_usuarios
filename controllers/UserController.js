@@ -1,7 +1,7 @@
 let User = require("../models/User");
 
 class UserController{
-    async index(req, res);
+    async index(req, res){};
 
     async create(req, res){
         console.log(req.body);
