@@ -5,9 +5,9 @@ let jwt = require('jsonwebtoken');
 let secret = "segredoSegredooooos123123123";
 
 class UserController{
-<<<<<<< HEAD
+
     async index(req, res){};
-=======
+
     async index(req, res){
         let response = await User.find_all();
         res.json(response);
@@ -23,7 +23,7 @@ class UserController{
             res.json(user);
         }
     }
->>>>>>> ea4fb594e2df8ee5c93b3e58dfcad56359e79500
+
 
     async create(req, res){
         console.log(req.body);
